@@ -148,24 +148,6 @@ class _FindScreenState extends State<FindScreen> {
     );
   }
 
-  String sanitizeUrl(String url) {
-    // Define a list of keywords or phrases to remove
-    final List<String> blacklist = ["spam", "malware", "phishing", "adult"];
-
-    // Lowercase the URL for case-insensitive matching
-    url = url.toLowerCase();
-
-    // Check for presence of any blacklisted keywords
-    for (var keyword in blacklist) {
-      if (url.contains(keyword)) {
-        return ""; // Return empty string if a blacklist keyword is found
-      }
-    }
-
-    // If no blacklist keywords are found, return the original URL
-    return url;
-  }
-
   List<Widget> _buildUrlList(String text) {
     final lines = text.split('\n');
     final urls = lines

@@ -47,6 +47,30 @@ class _DetailScreenState extends State<DetailScreen> {
     }
   }
 
+  String sanitizeUrl(String url) {
+    // Define a list of keywords or phrases to remove
+    final List<String> blacklist = ["spam", "malware", "phishing", "adult"];
+
+    // Lowercase the URL for case-insensitive matching
+    url = url.toLowerCase();
+
+    // Check for presence of any blacklisted keywords
+    for (var keyword in blacklist) {
+      if (url.contains(keyword)) {
+        return ""; // Return empty string if a blacklist keyword is found
+      }
+    }
+
+    // If no blacklist keywords are found, return the original URL
+    return url;
+  }
+
+  String appTitle(title) {
+    RegExp regex = RegExp(r'\[(.*?)\]');
+    String extractedString = regex.firstMatch(title)?.group(1) ?? '';
+    return extractedString;
+  }
+
   @override
   void initState() {
     output(widget.title!);
@@ -57,7 +81,7 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title!),
+        title: Text(appTitle(widget.title)),
       ),
       body: outPutResponse != null && !_isLoading
           ? SizedBox(
