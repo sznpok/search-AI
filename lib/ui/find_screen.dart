@@ -30,7 +30,8 @@ class _FindScreenState extends State<FindScreen> {
         model: 'gemini-pro',
         apiKey: apiKey,
       );
-      var content = "$title url ";
+      var content =
+          "Display the url of the top 10 best possible option for $title in terms of maximum funding, popular founders, maximum news coverage, publicity, public social media data of the company, company size, employee size";
 
       setState(() {
         _isLoading = true;
