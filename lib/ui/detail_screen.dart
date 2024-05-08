@@ -16,20 +16,27 @@ class _DetailScreenState extends State<DetailScreen> {
   GenerateContentResponse? outPutResponse;
   bool _isLoading = false;
 
-  output(String url) async {
+  Future<void> output(String url) async {
     try {
+      String sanitizedUrl = sanitizeUrl(url); // Sanitize the URL
+      if (sanitizedUrl.isEmpty) {
+        log('URL is empty or contains blacklisted keywords.');
+        return;
+      }
+
       String apiKey =
           "AIzaSyA4v1UgPMacCmrRQb658NbY6B5DPe1-msE"; // Fetch API key securely
       if (apiKey.isEmpty) {
-        log(apiKey.toString());
+        log('API Key is empty.');
         return;
       }
+
       final model = GenerativeModel(
         model: 'gemini-pro',
         apiKey: apiKey,
       );
       var content =
-          "I have this site $url .can you provide me contact details including company name, contact number, email address and Address";
+          "I have this site $sanitizedUrl. Can you provide me contact details including company name, contact number, email address, and Address?";
 
       setState(() {
         _isLoading = true;
@@ -38,7 +45,9 @@ class _DetailScreenState extends State<DetailScreen> {
       setState(() {
         _isLoading = false;
       });
-      (context as Element).markNeedsBuild();
+      if (mounted) {
+        setState(() {});
+      }
     } catch (e) {
       setState(() {
         _isLoading = false;
